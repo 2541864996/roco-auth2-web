@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ROCO - 登录</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Microsoft YaHei", sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0f172a, #1e293b, #0ea5e9);
+            position: relative;
+        }
+
+        .blob {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.08);
+            filter: blur(80px);
+            border-radius: 50%;
+        }
+
+        .blob:nth-child(1) { top: -100px; left: -100px; }
+        .blob:nth-child(2) { bottom: -120px; right: -80px; }
+
+        .bg-text {
+            position: absolute;
+            font-size: 160px;
+            font-weight: 900;
+            color: rgba(255,255,255,0.05);
+            letter-spacing: 10px;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .login-box {
+            width: 360px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 18px;
+        }
+
+        .logo span { color: #0ea5e9; }
+
+        .input-group { margin-bottom: 14px; }
+
+        .input-group input {
+            width: 330px;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #0ea5e9;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .divider {
+            margin: 18px 0 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 35%;
+            height: 1px;
+            background: #eee;
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .oauth {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .oauth-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* ===== 协议链接 ===== */
+        .agreement-link {
+            color: #0ea5e9;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .agreement-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== 弹窗 ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal-content {
+            width: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            animation: pop 0.2s ease;
+        }
+
+        @keyframes pop {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close {
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .modal-body {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="blob"></div>
+<div class="blob"></div>
+<div class="bg-text">ROCO</div>
+
+<div class="login-box">
+
+    <div class="logo">R<span>OCO</span></div>
+
+    <div class="input-group">
+        <input type="text" placeholder="账号 / 手机号 / 邮箱">
+    </div>
+
+    <div class="input-group">
+        <input type="password" placeholder="密码">
+    </div>
+
+    <button class="login-btn">登录</button>
+
+    <div class="divider">其他登录方式</div>
+
+    <div class="oauth">
+        <div class="oauth-btn">🐧</div>
+        <div class="oauth-btn">💬</div>
+        <div class="oauth-btn">🔥</div>
+    </div>
+
+    <div class="footer">
+        登录即代表同意
+        <a class="agreement-link" onclick="openModal()">《ROCO 用户协议》</a>
+    </div>
+
+</div>
+
+<!-- ===== 协议弹窗 ===== -->
+<div class="modal" id="modal" onclick="outsideClose(event)">
+    <div class="modal-content">
+        <div class="close" onclick="closeModal()">✕</div>
+
+        <div class="modal-title">ROCO 用户协议</div>
+
+        <div class="modal-body">
+            <p>欢迎使用 ROCO 服务。在使用本产品前，请您仔细阅读以下条款。</p>
+
+            <p><b>一、账号规则</b><br>
+                用户应保证注册信息真实有效，不得冒用他人身份。</p>
+
+            <p><b>二、服务使用</b><br>
+                用户不得利用本服务从事违法违规行为。</p>
+
+            <p><b>三、隐私保护</b><br>
+                我们会按照相关法律保护您的个人信息安全。</p>
+
+            <p><b>四、免责声明</b><br>
+                因不可抗力或第三方原因导致的损失，本平台不承担责任。</p>
+
+            <p><b>五、协议更新</b><br>
+                本协议可能随业务调整而更新，恕不另行通知。</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none';
+    }
+
+    function outsideClose(e) {
+        if (e.target.id === 'modal') {
+            closeModal();
+        }
+    }
+</script>
+
+</body>
+</html>

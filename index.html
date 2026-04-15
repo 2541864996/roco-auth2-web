@@ -186,6 +186,18 @@
             line-height: 1.6;
             color: #444;
         }
+
+        .oauth img {
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+        }
+
+        .oauth img:hover {
+            transform: scale(1.1);
+            opacity: 0.85;
+        }
     </style>
 </head>
 
@@ -212,11 +224,22 @@
     <div class="divider">其他登录方式</div>
 
     <div class="oauth">
-        <img src="./logo/QQ.svg" alt="QQ" width="35px" height="35px"/>
-        <img src="./logo/Weibo.svg" alt="Weibo" width="35px" height="35px"/>
-        <img src="./logo/Baidu.svg" alt="Baidu" width="35px" height="35px"/>
-        <img src="./logo/Gitee.svg" alt="Gitee" width="35px" height="35px"/>
-        <img src="./logo/Github.svg" alt="Github" width="35px" height="35px"/>
+
+        <img src="./logo/QQ.svg" alt="QQ" width="35px" height="35px"
+             onclick="loginQQ()" />
+
+        <img src="./logo/Weibo.svg" alt="Weibo" width="35px" height="35px"
+             onclick="loginWeibo()" />
+
+        <img src="./logo/Baidu.svg" alt="Baidu" width="35px" height="35px"
+             onclick="loginBaidu()" />
+
+        <img src="./logo/Gitee.svg" alt="Gitee" width="35px" height="35px"
+             onclick="loginGitee()" />
+
+        <img src="./logo/Github.svg" alt="Github" width="35px" height="35px"
+             onclick="loginGithub()" />
+
     </div>
 
     <div class="footer">
@@ -267,6 +290,30 @@
         if (e.target.id === 'modal') {
             closeModal();
         }
+    }
+    function loginWeibo() {
+        const clientId = "YOUR_CLIENT_ID";
+        const redirectUri = encodeURIComponent("https://auth.xiaocaowang.xyz/callback/weibo");
+
+        const url = `https://api.weibo.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+
+        window.location.href = url;
+    }
+
+    function loginQQ() {
+        alert("QQ 登录未配置");
+    }
+
+    function loginBaidu() {
+        alert("百度登录未配置");
+    }
+
+    function loginGitee() {
+        alert("Gitee 登录未配置");
+    }
+
+    function loginGithub() {
+        alert("Github 登录未配置");
     }
 </script>
 
